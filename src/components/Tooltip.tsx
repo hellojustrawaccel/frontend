@@ -31,11 +31,21 @@ const Tooltip = forwardRef<HTMLDivElement, Props>(({ children, content, classNam
             exit={{ opacity: 0, y: 4, scale: 0.98 }}
             transition={{ duration: 0.15, ease: [0.26, 1, 0.6, 1] }}
             className={cn(
-              'border-primary/10 text-primary pointer-events-none absolute top-full left-0 z-50 mt-2 w-max rounded-md border bg-zinc-900 px-2 py-1 text-xs shadow-lg max-sm:hidden',
+              'group border-primary/10 fixed left-10 z-10 w-min overflow-clip rounded-md border bg-zinc-950 p-0.5 transition-colors duration-100 max-sm:hidden',
               className
             )}
+            style={{
+              marginTop: `-2rem`,
+              marginLeft: `-0.5rem`,
+            }}
           >
-            {content}
+            {typeof content === 'string' ? (
+              <p className="text-primary w-full rounded-full px-1.5 pt-1 text-center text-xs transition-colors duration-100">
+                {content}
+              </p>
+            ) : (
+              content
+            )}
           </motion.div>
         )}
       </AnimatePresence>
