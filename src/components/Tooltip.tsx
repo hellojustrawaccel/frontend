@@ -1,63 +1,48 @@
-import { cn } from "@/util/utils";
-import { AnimatePresence, motion } from "motion/react";
-import { useState, forwardRef } from "react";
+'use client';
 
-export const Tooltip = forwardRef<
-  HTMLDivElement,
-  {
-    children: React.ReactNode;
-    content: string | React.ReactNode;
-    className?: string;
-  }
->(({ children, content, className }, ref) => {
-  const [show, setShow] = useState(false);
+import { AnimatePresence, motion } from 'motion/react';
+import { forwardRef, useState } from 'react';
+
+import { cn } from '@/utils/cn.util';
+
+interface Props {
+  children: React.ReactNode;
+  content: React.ReactNode;
+  className?: string;
+}
+
+const Tooltip = forwardRef<HTMLDivElement, Props>(({ children, content, className }, ref) => {
+  const [open, setOpen] = useState<boolean>(false);
 
   return (
-    <div>
-      <AnimatePresence>
-        {show ? (
-          <motion.div
-            initial={{ scale: 0.99, y: 2, opacity: 0 }}
-            animate={{ scale: 1, y: 0, opacity: 1 }}
-            exit={{
-              scale: 0.99,
-              y: 2,
-              opacity: 0,
-            }}
-            onMouseOver={() => setShow(true)}
-            onMouseLeave={() => setShow(false)}
-            transition={{
-              duration: 0.15,
-              ease: [0.26, 1, 0.6, 1],
-            }}
-            className={cn(
-              "group border-primary/10 fixed left-10 z-10 w-min overflow-clip rounded-md border bg-stone-50 p-0.5 transition-colors duration-100 max-sm:hidden",
-              className,
-            )}
-            style={{
-              marginTop: `-2rem`,
-              marginLeft: `-0.5rem`,
-            }}
-          >
-            {typeof content === "string" ? (
-              <p className="text-primary w-full rounded-full px-1.5 pt-1 text-center text-xs transition-colors duration-100">
-                {content}
-              </p>
-            ) : (
-              content
-            )}
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
+    <div
+      ref={ref}
+      className="relative inline-flex"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
+      {children}
 
-      <div
-        ref={ref}
-        onMouseOver={() => setShow(true)}
-        onMouseLeave={() => setShow(false)}
-      >
-        {children}
-      </div>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: 4, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 4, scale: 0.98 }}
+            transition={{ duration: 0.15, ease: [0.26, 1, 0.6, 1] }}
+            className={cn(
+              'border-primary/10 text-primary pointer-events-none absolute top-full left-0 z-50 mt-2 w-max rounded-md border bg-zinc-900 px-2 py-1 text-xs shadow-lg max-sm:hidden',
+              className
+            )}
+          >
+            {content}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 });
-Tooltip.displayName = "Tooltip";
+
+Tooltip.displayName = 'Tooltip';
+
+export default Tooltip;

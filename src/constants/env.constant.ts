@@ -1,0 +1,8 @@
+const { env } = process;
+
+const BACKEND_URL = env.NEXT_PUBLIC_BACKEND_URL;
+const CDN_URL = env.NEXT_PUBLIC_CDN_URL;
+const SITE_URL = env.NEXT_PUBLIC_SITE_URL;
+const EMAIL = env.NEXT_PUBLIC_EMAIL_URL;
+
+export { BACKEND_URL, CDN_URL, EMAIL, SITE_URL };
