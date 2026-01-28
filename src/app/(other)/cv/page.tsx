@@ -22,7 +22,7 @@ const CVPage = () => {
               can customize it. builder for customization is still being developed, but you can
               view the resume{' '}
               <Link
-                href={'https://justrawaccel.dev/cv.pdf'}
+                href={'/cv.pdf'}
                 className="text-medium hover:underline"
                 target="_blank"
                 rel="noopener noreferrer"
