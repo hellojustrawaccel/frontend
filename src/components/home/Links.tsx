@@ -1,9 +1,9 @@
 import Skeleton from '@/components/Skeleton';
-import { Link } from '@/types/links';
+import { BackendLink } from '@/types/links';
 
 interface Props {
   loading: boolean;
-  links: Link[];
+  links: BackendLink[];
 }
 
 const HomeLinks = ({ loading, links }: Props) => (
@@ -17,15 +17,15 @@ const HomeLinks = ({ loading, links }: Props) => (
           ))}
       </>
     ) : (
-      links.map(({ name, url }, i) => (
+      links.map(({ title, url }, i) => (
         <a
-          key={`${i}-${name}`}
+          key={`${i}-${title}`}
           href={url.startsWith('MAIL:') ? `mailto:${url.slice(5)}` : url}
           target="_blank"
           rel="noopener noreferrer"
           className="text-tertiary hover:text-primary cursor-pointer whitespace-nowrap transition-colors duration-150"
         >
-          {name}
+          {title}
         </a>
       ))
     )}

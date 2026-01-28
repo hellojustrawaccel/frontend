@@ -1,10 +1,10 @@
 export enum LinkType {
-  Home = 'HOME',
-  More = 'MORE',
+  Home = 'home',
+  More = 'more',
 }
 
 export enum ExperienceType {
-  FullTime = 'FULL_TIME',
-  PartTime = 'PART_TIME',
-  Contract = 'CONTRACT',
+  FullTime = 'full_time',
+  PartTime = 'part_time',
+  Contract = 'contract',
 }

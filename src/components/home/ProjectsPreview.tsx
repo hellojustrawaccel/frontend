@@ -4,7 +4,7 @@ import { motion } from 'motion/react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { getImageURLFromKey } from '@/utils/cdn/image.cdn';
+import { getImageURLFromKey } from '@/utils/cdn/image';
 
 interface Props {
   projects: Project[];

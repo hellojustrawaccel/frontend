@@ -8,17 +8,18 @@ import SpotifyTooltip from '@/components/home/SpotifyTooltip';
 import PageContent from '@/components/PageContent';
 import PageWrapper from '@/components/PageWrapper';
 import { DISCORD_ID } from '@/constants/user.constant';
-import { useHomeExperience } from '@/hooks/useHomeExperience';
-import { useHomeLinks } from '@/hooks/useHomeLinks';
+import { useHomeExperience } from '@/hooks/useExperiences';
+import { useLinks } from '@/hooks/useLinks';
 import { useLanyard } from '@/hooks/useLanyard';
 
 import HomeExperience from './Experience';
-import { mockExp, mockLinks, mockProjects } from './mocks';
+import { mockProjects } from './mocks';
 import { HomeProjectsPreview } from './ProjectsPreview';
+import { LinkType } from '@/constants/enums.constant';
 
 const HomeClient = () => {
   const activity = useLanyard(DISCORD_ID);
-  const { links, loading: loadingLinks } = useHomeLinks();
+  const { links, loading: loadingLinks } = useLinks(LinkType.Home);
   const { experiences, loading: loadingExp } = useHomeExperience();
 
   const [showProjectsModal, setShowProjectsModal] = useState(false);
@@ -29,10 +30,10 @@ const HomeClient = () => {
         <div className="text-primary flex h-full flex-col gap-6 text-sm max-md:pb-14">
           <div className="flex flex-col">
             <HomeDescription />
-            <HomeLinks loading={loadingLinks} links={mockLinks} />
+            <HomeLinks loading={loadingLinks} links={links} />
           </div>
 
-          <HomeExperience loading={loadingExp} experiences={mockExp} />
+          <HomeExperience loading={loadingExp} experiences={experiences} />
           <HomeProjectsPreview
             projects={mockProjects}
             onViewAll={() => setShowProjectsModal(true)}

@@ -50,7 +50,7 @@ export const mockLinks: Link[] = [
 
 export const mockExp: Experience[] = [
   {
-    id: 'a8jasfasf',
+    id: 'assisterr',
     company: 'Assisterr',
     color: '#282828',
     role: 'backend engineer',
@@ -60,7 +60,7 @@ export const mockExp: Experience[] = [
     url: 'https://assisterr.ai/',
   },
   {
-    id: 'agjasfasf',
+    id: 'insiders',
     company: 'Assisterr',
     color: '#282828',
     role: 'backend engineer',
@@ -70,7 +70,7 @@ export const mockExp: Experience[] = [
     url: 'https://assisterr.ai/',
   },
   {
-    id: 'ahjasfasf',
+    id: 'yamiko',
     company: 'Assisterr',
     color: '#282828',
     role: 'backend engineer',

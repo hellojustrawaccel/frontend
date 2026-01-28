@@ -12,6 +12,7 @@ import DesktopNav from '@/components/nav/DesktopNav';
 import MobileNav from '@/components/nav/MobileNav';
 import PreChildrenDiv from '@/components/PreChildrenDiv';
 import { SITE_URL } from '@/constants/env.constant';
+import NextAuthProvider from '@/providers/NextAuthProvider';
 
 const ysabeau = Ysabeau({ subsets: ['latin'], style: 'italic', variable: '--font-ysabeau' });
 const karla = Karla({ subsets: ['latin'], variable: '--font-karla' });
@@ -73,17 +74,19 @@ const HomeLayout = ({ children }: { children: React.ReactNode }) => (
         enableSystem={false}
         disableTransitionOnChange
       >
-        <Background />
+        <NextAuthProvider>
+          <Background />
 
-        <DesktopNav />
-        <MobileNav />
+          <DesktopNav />
+          <MobileNav />
 
-        <PreChildrenDiv>
-          {children}
+          <PreChildrenDiv>
+            {children}
 
-          <SpeedInsights />
-          <Analytics />
-        </PreChildrenDiv>
+            <SpeedInsights />
+            <Analytics />
+          </PreChildrenDiv>
+        </NextAuthProvider>
       </ThemeProvider>
     </body>
   </html>

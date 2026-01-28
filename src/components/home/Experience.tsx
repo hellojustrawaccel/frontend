@@ -7,7 +7,7 @@ import LinkPreview from '@/components/LinkPreview';
 import Skeleton from '@/components/Skeleton';
 import { ExperienceType } from '@/constants/enums.constant';
 import { Experience } from '@/types/experience';
-import { getImageURLFromKey } from '@/utils/cdn/image.cdn';
+import { getImageURLFromKey } from '@/utils/cdn/image';
 
 const TypeTitles: Record<string | ExperienceType, string> = {
   [ExperienceType.Contract]: 'contract',
@@ -53,7 +53,7 @@ const HomeExperience = ({ loading, experiences }: Props) => {
             >
               <LinkPreview
                 href={data.url}
-                preview={getImageURLFromKey(`experience/${data.id}.webp`)}
+                preview={getImageURLFromKey(`experiences/${data.id}.webp`)}
               >
                 <div className="flex items-center gap-2">
                   <span

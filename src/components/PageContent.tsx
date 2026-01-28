@@ -9,7 +9,7 @@ import { forwardRef, useEffect, useState } from 'react';
 import Tooltip from '@/components/Tooltip';
 import { TIME_ZONE } from '@/constants/time.constant';
 import { NAME } from '@/constants/user.constant';
-import { cn } from '@/utils/cn.util';
+import { cn } from '@/utils/cn';
 
 dayjs.extend(dayjs_utc_plugin);
 dayjs.extend(dayjs_timezone_plugin);

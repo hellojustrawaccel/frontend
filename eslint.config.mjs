@@ -6,7 +6,14 @@ import unusedImports from 'eslint-plugin-unused-imports';
 import tseslint from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 
-export default [
+import { defineConfig, globalIgnores } from 'eslint/config';
+import nextVitals from 'eslint-config-next/core-web-vitals';
+import nextTs from 'eslint-config-next/typescript';
+
+const eslintConfig = defineConfig([
+  ...nextVitals,
+  ...nextTs,
+  globalIgnores(['.next/**', 'out/**', 'build/**', 'next-env.d.ts']),
   {
     files: ['**/*.ts', '**/*.tsx'],
 
@@ -66,4 +73,6 @@ export default [
       ],
     },
   },
-];
+]);
+
+export default eslintConfig;

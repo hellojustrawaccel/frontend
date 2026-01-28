@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from 'motion/react';
 import { forwardRef, useState } from 'react';
 
-import { cn } from '@/utils/cn.util';
+import { cn } from '@/utils/cn';
 
 interface Props {
   children: React.ReactNode;

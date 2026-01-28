@@ -2,17 +2,18 @@
 
 import { useEffect, useState } from 'react';
 
-import { getExperience } from '@/services/experience';
+import { getExperiences } from '@/services/experience';
 import { Experience } from '@/types/experience';
 
 export const useHomeExperience = () => {
-  const [experiences, setExperiences] = useState<Experience[]>([]);
+  const [experiences, setExperiences] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getExperience()
+    getExperiences()
       .then(setExperiences)
       .finally(() => setLoading(false));
+    setLoading(false);
   }, []);
 
   return { experiences, loading };

@@ -1,6 +1,7 @@
 import type { NextConfig } from 'next';
 
 const config: NextConfig = {
+  reactCompiler: true,
   pageExtensions: ['ts', 'tsx'],
   images: {
     remotePatterns: [
@@ -10,6 +11,14 @@ const config: NextConfig = {
       { protocol: 'https', hostname: 'github.com' },
       { protocol: 'https', hostname: 'cdn.jsdelivr.net' },
     ],
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/api/backend/:path*',
+        destination: 'http://localhost:3001/:path*',
+      },
+    ];
   },
 };
 

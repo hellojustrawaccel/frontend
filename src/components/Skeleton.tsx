@@ -1,4 +1,4 @@
-import { cn } from '@/utils/cn.util';
+import { cn } from '@/utils/cn';
 
 const Skeleton = ({ className }: { className?: string }) => (
   <div className={cn('animate-pulse rounded-md bg-neutral-800/60', className)} />
