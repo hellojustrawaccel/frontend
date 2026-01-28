@@ -54,7 +54,7 @@ const helveticaNeue = localFont({
   variable: '--font-helvetica-neue',
 });
 
-const metadata: Metadata = {
+export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
     default: 'justrawaccel',
@@ -91,7 +91,5 @@ const HomeLayout = ({ children }: { children: React.ReactNode }) => (
     </body>
   </html>
 );
-
-export { metadata };
 
 export default HomeLayout;

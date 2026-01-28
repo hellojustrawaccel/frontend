@@ -3,16 +3,16 @@
 import { useEffect, useState } from 'react';
 
 import { LinkType } from '@/constants/enums.constant';
-import { getLinks } from '@/services/links';
-import { BackendLink } from '@/types/links';
+import { getLinks } from '@/lib/queries/links';
+import { ClientLink } from '@/types';
 
 export const useLinks = (type: LinkType) => {
-  const [links, setLinks] = useState<BackendLink[]>([]);
+  const [links, setLinks] = useState<ClientLink<typeof type>[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getLinks()
-      .then((res) => setLinks(res.filter((link) => link.type === type)))
+    getLinks(type)
+      .then((res) => setLinks(res))
       .finally(() => setLoading(false));
   }, []);
 

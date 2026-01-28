@@ -1,6 +1,6 @@
 export enum LinkType {
-  Home = 'home',
-  More = 'more',
+  Home = 'HOME',
+  More = 'MORE',
 }
 
 export enum ExperienceType {
