@@ -4,7 +4,7 @@ export enum LinkType {
 }
 
 export enum ExperienceType {
-  FullTime = 'full_time',
-  PartTime = 'part_time',
-  Contract = 'contract',
+  FullTime = 'FULL_TIME',
+  PartTime = 'PART_TIME',
+  Contract = 'CONTRACT',
 }

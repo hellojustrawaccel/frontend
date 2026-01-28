@@ -3,15 +3,9 @@
 import { motion } from 'motion/react';
 import LinkPreview from '@/components/LinkPreview';
 import ExperienceDuration from '@/components/home/ExperienceDuration';
-import { ExperienceType } from '@/constants/enums.constant';
+import ExperienceType from '@/components/home/ExperienceType';
 import { getImageURLFromKey } from '@/utils/cdn/image';
 import { ClientExperience } from '@/types';
-
-const TypeTitles: Record<string | ExperienceType, string> = {
-  [ExperienceType.Contract]: 'contract',
-  [ExperienceType.FullTime]: 'full-time',
-  [ExperienceType.PartTime]: 'part-time',
-};
 
 interface ExperienceClientProps {
   experiences: ClientExperience[];
@@ -47,7 +41,7 @@ export function ExperienceClient({ experiences }: ExperienceClientProps) {
               </div>
 
               <p className="text-tertiary">
-                {data.role} ({TypeTitles[data.type]})
+                {data.role} <ExperienceType type={data.type} />
               </p>
             </LinkPreview>
           </motion.div>
