@@ -11,7 +11,6 @@ import Background from '@/components/layout/Background';
 import DesktopNav from '@/components/nav/DesktopNav';
 import MobileNav from '@/components/nav/MobileNav';
 import PreChildrenDiv from '@/components/layout/PreChildrenDiv';
-import { SITE_URL } from '@/constants/env.constant';
 import NextAuthProvider from '@/providers/NextAuthProvider';
 
 const ysabeau = Ysabeau({ subsets: ['latin'], style: 'italic', variable: '--font-ysabeau' });
