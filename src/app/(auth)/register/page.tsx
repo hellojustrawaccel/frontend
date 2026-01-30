@@ -7,9 +7,9 @@ import { motion, AnimatePresence } from 'motion/react';
 import OAuthProviders from '@/components/auth/OAuthProviders';
 import RegisterForm from '@/components/auth/RegisterForm';
 import VerifyEmailForm from '@/components/auth/VerifyEmailForm';
-import PageContent from '@/components/PageContent';
-import PageWrapper from '@/components/PageWrapper';
-import { register as registerUser, verifyEmail } from '@/services/auth';
+import PageContent from '@/components/layout/PageContent';
+import PageWrapper from '@/components/layout/PageWrapper';
+import { register as registerUser, verifyEmail } from '@/lib/queries/auth';
 import { signIn } from 'next-auth/react';
 
 type RegisterStep = 'register' | 'verify' | 'pending';
@@ -60,7 +60,6 @@ export default function RegisterPage() {
     try {
       await verifyEmail({ email, code });
 
-      // Email verified successfully, show pending activation screen
       setStep('pending');
     } catch (err: any) {
       const errorMessage = err.message || 'verification failed';

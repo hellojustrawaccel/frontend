@@ -2,7 +2,7 @@ enum PageKey {
   Home = 'home',
   CV = 'cv',
   Space = 'space',
-  Blog = 'blog',
+  Channel = 'channel',
   More = 'more',
 }
 
@@ -10,7 +10,7 @@ const PAGES = {
   [PageKey.Home]: '/',
   [PageKey.CV]: '/cv',
   [PageKey.Space]: '/space',
-  [PageKey.Blog]: '/blog',
+  [PageKey.Channel]: '/channel',
   [PageKey.More]: '/more',
 };
 

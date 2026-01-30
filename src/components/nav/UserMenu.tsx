@@ -3,8 +3,8 @@
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
-import { Avatar } from './Avatar';
-import { cn } from '@/utils/cn';
+import Avatar from './Avatar';
+import { cn } from '@/lib/cn';
 
 type UserMenuProps = {
   user: {
@@ -18,7 +18,7 @@ type UserMenuProps = {
   className?: string;
 };
 
-export const UserMenu = ({ user, size = 'sm', className }: UserMenuProps) => {
+const UserMenu = ({ user, size = 'sm', className }: UserMenuProps) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -95,3 +95,5 @@ export const UserMenu = ({ user, size = 'sm', className }: UserMenuProps) => {
     </div>
   );
 };
+
+export default UserMenu;

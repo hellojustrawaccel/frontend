@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { getLanyard } from '@/services/lanyard';
+import { getLanyard } from '@/lib/queries/lanyard';
 
 const useLanyard = (id: string) => {
   const [data, setData] = useState(null);

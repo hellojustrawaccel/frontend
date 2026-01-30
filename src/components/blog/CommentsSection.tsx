@@ -5,9 +5,9 @@ import { useState, useEffect } from 'react';
 import { MessageCircle, Send } from 'lucide-react';
 
 import CommentCard from './CommentCard';
-import LoadingSpinner from '@/components/LoadingSpinner';
+import { CommentSkeleton } from '@/components/common/skeletons';
 import type { Comment } from '@/types/post';
-import { cn } from '@/utils/cn';
+import { cn } from '@/lib/cn';
 
 interface CommentsSectionProps {
   postId: string;
@@ -65,7 +65,6 @@ const CommentsSection = ({
 
   return (
     <div className="flex w-full flex-col gap-4">
-      {/* Header */}
       <div className="flex items-center gap-2">
         <MessageCircle className="text-tertiary size-4" />
         <h3 className="text-primary text-sm font-medium">
@@ -73,7 +72,6 @@ const CommentsSection = ({
         </h3>
       </div>
 
-      {/* Create Comment Form */}
       {isAuthenticated && onCreateComment && (
         <form onSubmit={handleSubmit} className="flex flex-col gap-2">
           {error && (
@@ -115,10 +113,7 @@ const CommentsSection = ({
               )}
             >
               {isSubmitting ? (
-                <>
-                  <LoadingSpinner size="sm" />
-                  Posting...
-                </>
+                <>Posting...</>
               ) : (
                 <>
                   <Send className="size-4" />
@@ -138,10 +133,11 @@ const CommentsSection = ({
         </div>
       )}
 
-      {/* Comments List */}
       {isLoading && comments.length === 0 ? (
-        <div className="flex w-full items-center justify-center py-8">
-          <LoadingSpinner />
+        <div className="flex w-full flex-col gap-3">
+          <CommentSkeleton />
+          <CommentSkeleton />
+          <CommentSkeleton />
         </div>
       ) : comments.length === 0 ? (
         <div className="border-tertiary/10 rounded-lg border bg-transparent p-8">
@@ -165,8 +161,9 @@ const CommentsSection = ({
           </AnimatePresence>
 
           {isLoading && comments.length > 0 && (
-            <div className="flex w-full items-center justify-center py-4">
-              <LoadingSpinner />
+            <div className="flex w-full flex-col gap-3">
+              <CommentSkeleton />
+              <CommentSkeleton />
             </div>
           )}
 

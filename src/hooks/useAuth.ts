@@ -2,7 +2,7 @@
 
 import { useSession } from 'next-auth/react';
 import { useMemo } from 'react';
-import type { UserRole, User } from '@/types/auth';
+import type { User } from '@/types';
 
 export const useAuth = () => {
   const { data: session, status } = useSession();
@@ -12,13 +12,13 @@ export const useAuth = () => {
 
     return {
       id: session.user.id,
-      username: session.user.username ?? session.user.email?.split('@')[0] ?? '',
-      email: session.user.email ?? '',
-      image: session.user.image ?? null,
-      provider: (session.user.provider ?? 'google') as User['provider'],
-      emailVerified: session.user.emailVerified ?? true,
-      active: session.user.active ?? true,
-      role: (session.user.role ?? 'user') as UserRole,
+      username: session.user.username,
+      email: session.user.email,
+      image: session.user.image,
+      provider: session.user.provider,
+      emailVerified: session.user.emailVerified ?? false,
+      active: session.user.active,
+      isAdmin: session.user.isAdmin,
     };
   }, [session]);
 

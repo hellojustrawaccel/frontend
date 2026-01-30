@@ -3,7 +3,7 @@
 import { motion } from 'motion/react';
 import Image from 'next/image';
 
-import Tooltip from '@/components/Tooltip';
+import Tooltip from '@/components/common/Tooltip';
 import { LanyardData } from '@/types/lanyard';
 
 type Props = {

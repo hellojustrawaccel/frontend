@@ -1,18 +1,20 @@
 import { Suspense } from 'react';
 
-import PageContent from '@/components/PageContent';
-import PageWrapper from '@/components/PageWrapper';
+import PageContent from '@/components/layout/PageContent';
+import PageWrapper from '@/components/layout/PageWrapper';
 import CurrentAge from '@/components/more/CurrentAge';
-import { LinksClient } from '@/components/more/LinksClient';
-import { FunFactsClient } from '@/components/more/FunFactsClient';
+import LinksClient from '@/components/common/LinksClient';
+import FunFactsClient from '@/components/more/FunFactsClient';
 import { getLinks } from '@/lib/queries/links';
 import { LinkType } from '@/constants/enums.constant';
-import LoadingSpinner from '@/components/LoadingSpinner';
+import LinksSkeleton from '@/components/common/skeletons/LinksSkeleton';
+
+export const dynamic = 'force-dynamic';
 
 const MoreLinks = async () => {
   const links = await getLinks(LinkType.More);
 
-  return <LinksClient links={links} />;
+  return <LinksClient links={links} variant="vertical" title="other links" />;
 };
 
 export default function MorePage() {
@@ -40,7 +42,7 @@ export default function MorePage() {
 
           <FunFactsClient facts={funFacts.map((f) => ({ key: f.id, content: f.text }))} />
 
-          <Suspense fallback={<LoadingSpinner />}>
+          <Suspense fallback={<LinksSkeleton />}>
             <MoreLinks />
           </Suspense>
         </div>

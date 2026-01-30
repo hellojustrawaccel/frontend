@@ -19,14 +19,14 @@ interface VerifyLoginFormProps {
   devCode?: string;
 }
 
-export default function VerifyLoginForm({
+const VerifyLoginForm = ({
   email,
   onSubmit,
   onBack,
   error,
   loading,
   devCode,
-}: VerifyLoginFormProps) {
+}: VerifyLoginFormProps) => {
   const {
     register,
     handleSubmit,
@@ -100,4 +100,6 @@ export default function VerifyLoginForm({
       </form>
     </div>
   );
-}
+};
+
+export default VerifyLoginForm;

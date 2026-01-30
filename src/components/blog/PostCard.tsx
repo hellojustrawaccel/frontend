@@ -5,10 +5,11 @@ import { formatDistanceToNow } from 'date-fns';
 import { ru } from 'date-fns/locale';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { Heart, MessageCircle, Trash2, Edit2 } from 'lucide-react';
 
 import type { Post } from '@/types/post';
-import { cn } from '@/utils/cn';
+import { cn } from '@/lib/cn';
 
 interface PostCardProps {
   post: Post;
@@ -59,13 +60,14 @@ const PostCard = ({
       onClick={handleCardClick}
       className="border-tertiary/10 hover:border-tertiary/20 group relative cursor-pointer rounded-lg border bg-transparent p-4 transition-colors"
     >
-      {/* Header */}
       <div className="mb-3 flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
           {post.author?.image && !imageError ? (
-            <img
+            <Image
               src={post.author.image}
               alt={post.author.username}
+              width={40}
+              height={40}
               className="size-10 rounded-full object-cover"
               onError={() => setImageError(true)}
             />
@@ -108,7 +110,6 @@ const PostCard = ({
         )}
       </div>
 
-      {/* Content */}
       <div className="mb-4">
         <h3 className="text-primary mb-2 text-base font-medium">{post.title}</h3>
         {post.excerpt && <p className="text-secondary mb-2 text-sm">{post.excerpt}</p>}
@@ -117,7 +118,6 @@ const PostCard = ({
         </div>
       </div>
 
-      {/* Actions */}
       <div className="flex items-center gap-6">
         <button
           onClick={(e) => onLike && handleActionClick(e, () => onLike(post.id))}

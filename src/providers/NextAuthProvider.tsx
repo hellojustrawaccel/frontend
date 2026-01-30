@@ -2,8 +2,8 @@
 
 import { SessionProvider, useSession } from 'next-auth/react';
 import { useState, useEffect } from 'react';
-import * as authService from '@/services/auth';
-import type { User } from '@/types/auth';
+import * as authService from '@/lib/queries/auth';
+import type { User } from '@/types';
 
 export default function NextAuthProvider({ children }: { children: React.ReactNode }) {
   return <SessionProvider>{children}</SessionProvider>;
@@ -19,8 +19,14 @@ export function useAdminUsers() {
       if (!session?.backendToken) return;
 
       try {
-        const fetchedUsers = await authService.getUsers(session.backendToken);
-        setUsers(fetchedUsers);
+        const fetchedUsers = await authService.getUsers(
+          1,
+          100,
+          undefined,
+          undefined,
+          session.backendToken
+        );
+        setUsers(fetchedUsers.users);
       } catch {
         setUsers([]);
       }
@@ -34,9 +40,15 @@ export function useAdminUsers() {
 
     setLoading(true);
     try {
-      await authService.activateUser({ username }, session.backendToken);
-      const freshUsers = await authService.getUsers(session.backendToken);
-      setUsers(freshUsers);
+      await authService.activateUser(username, session.backendToken);
+      const freshUsers = await authService.getUsers(
+        1,
+        100,
+        undefined,
+        undefined,
+        session.backendToken
+      );
+      setUsers(freshUsers.users);
     } catch (error) {
       throw error;
     } finally {
@@ -49,8 +61,14 @@ export function useAdminUsers() {
 
     setLoading(true);
     try {
-      const freshUsers = await authService.getUsers(session.backendToken);
-      setUsers(freshUsers);
+      const freshUsers = await authService.getUsers(
+        1,
+        100,
+        undefined,
+        undefined,
+        session.backendToken
+      );
+      setUsers(freshUsers.users);
     } catch (error) {
       throw error;
     } finally {

@@ -7,10 +7,10 @@ import { Karla, Ysabeau } from 'next/font/google';
 import localFont from 'next/font/local';
 import { ThemeProvider } from 'next-themes';
 
-import Background from '@/components/Background';
+import Background from '@/components/layout/Background';
 import DesktopNav from '@/components/nav/DesktopNav';
 import MobileNav from '@/components/nav/MobileNav';
-import PreChildrenDiv from '@/components/PreChildrenDiv';
+import PreChildrenDiv from '@/components/layout/PreChildrenDiv';
 import { SITE_URL } from '@/constants/env.constant';
 import NextAuthProvider from '@/providers/NextAuthProvider';
 
@@ -55,7 +55,7 @@ const helveticaNeue = localFont({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL!),
   title: {
     default: 'justrawaccel',
     template: '%s — justrawaccel',

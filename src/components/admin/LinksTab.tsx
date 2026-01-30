@@ -1,16 +1,16 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { getLinks, createLink, updateLink, deleteLink } from '@/services/links';
-import type { BackendLink, CreateLinkRequest } from '@/types/links';
-import LoadingSpinner from '@/components/LoadingSpinner';
-import ErrorBlock from '@/components/ErrorBlock';
+import { getLinks, createLink, updateLink, deleteLink } from '@/lib/queries/links';
+import type { BackendLink, CreateLinkRequest } from '@/types';
+import Skeleton from '@/components/common/Skeleton';
+import ErrorBlock from '@/components/common/ErrorBlock';
 
 type LinksTabProps = {
   token?: string;
 };
 
-export function LinksTab({ token }: LinksTabProps) {
+const LinksTab = ({ token }: LinksTabProps) => {
   const [links, setLinks] = useState<BackendLink[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -18,8 +18,10 @@ export function LinksTab({ token }: LinksTabProps) {
   const [isCreating, setIsCreating] = useState(false);
   const [formData, setFormData] = useState<CreateLinkRequest>({
     title: '',
+    type: '',
     url: '',
-    icon: '',
+    description: '',
+    color: '',
     order: 0,
   });
 
@@ -52,7 +54,7 @@ export function LinksTab({ token }: LinksTabProps) {
         await createLink(formData, token);
       }
 
-      setFormData({ title: '', url: '', icon: '', order: 0 });
+      setFormData({ title: '', type: '', url: '', description: '', color: '', order: 0 });
       setEditingLink(null);
       setIsCreating(false);
       loadLinks();
@@ -65,8 +67,10 @@ export function LinksTab({ token }: LinksTabProps) {
     setEditingLink(link);
     setFormData({
       title: link.title,
+      type: link.type,
       url: link.url,
-      icon: link.icon || '',
+      description: link.description || '',
+      color: link.color || '',
       order: link.order,
     });
     setIsCreating(true);
@@ -84,15 +88,18 @@ export function LinksTab({ token }: LinksTabProps) {
   };
 
   const handleCancel = () => {
-    setFormData({ title: '', url: '', icon: '', order: 0 });
+    setFormData({ title: '', type: '', url: '', description: '', color: '', order: 0 });
     setEditingLink(null);
     setIsCreating(false);
   };
 
   if (loading && links.length === 0) {
     return (
-      <div className="flex justify-center py-12">
-        <LoadingSpinner />
+      <div className="flex flex-col gap-3 py-12">
+        <Skeleton className="h-12 w-full" />
+        <Skeleton className="h-12 w-full" />
+        <Skeleton className="h-12 w-full" />
+        <Skeleton className="h-12 w-full" />
       </div>
     );
   }
@@ -101,7 +108,6 @@ export function LinksTab({ token }: LinksTabProps) {
     <div className="space-y-4">
       {error && <ErrorBlock label="Ошибка" message={error} />}
 
-      {/* Create Button */}
       {!isCreating && (
         <button
           onClick={() => setIsCreating(true)}
@@ -111,7 +117,6 @@ export function LinksTab({ token }: LinksTabProps) {
         </button>
       )}
 
-      {/* Create/Edit Form */}
       {isCreating && (
         <form
           onSubmit={handleSubmit}
@@ -132,6 +137,15 @@ export function LinksTab({ token }: LinksTabProps) {
           />
 
           <input
+            type="text"
+            placeholder="Тип (home, more)"
+            value={formData.type}
+            onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+            required
+            className="border-secondary/20 focus:border-secondary/40 w-full rounded border bg-white px-3 py-2 text-xs focus:outline-none"
+          />
+
+          <input
             type="url"
             placeholder="URL"
             value={formData.url}
@@ -142,9 +156,17 @@ export function LinksTab({ token }: LinksTabProps) {
 
           <input
             type="text"
-            placeholder="Иконка (опционально)"
-            value={formData.icon}
-            onChange={(e) => setFormData({ ...formData, icon: e.target.value })}
+            placeholder="Описание (опционально)"
+            value={formData.description}
+            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+            className="border-secondary/20 focus:border-secondary/40 w-full rounded border bg-white px-3 py-2 text-xs focus:outline-none"
+          />
+
+          <input
+            type="text"
+            placeholder="Цвет (опционально, hex)"
+            value={formData.color}
+            onChange={(e) => setFormData({ ...formData, color: e.target.value })}
             className="border-secondary/20 focus:border-secondary/40 w-full rounded border bg-white px-3 py-2 text-xs focus:outline-none"
           />
 
@@ -176,7 +198,6 @@ export function LinksTab({ token }: LinksTabProps) {
         </form>
       )}
 
-      {/* Links List */}
       <div className="space-y-2">
         {links.map((link) => (
           <div
@@ -185,12 +206,17 @@ export function LinksTab({ token }: LinksTabProps) {
           >
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2">
-                {link.icon && <span className="text-sm">{link.icon}</span>}
                 <h4 className="text-primary text-sm font-medium">{link.title}</h4>
+                <span className="bg-secondary/10 text-secondary/60 border-secondary/20 rounded border px-2 py-0.5 text-[10px]">
+                  {link.type}
+                </span>
                 <span className="bg-secondary/10 text-secondary/60 border-secondary/20 rounded border px-2 py-0.5 text-[10px]">
                   #{link.order}
                 </span>
               </div>
+              {link.description && (
+                <p className="text-secondary/60 text-xs">{link.description}</p>
+              )}
               <a
                 href={link.url}
                 target="_blank"
@@ -199,6 +225,15 @@ export function LinksTab({ token }: LinksTabProps) {
               >
                 {link.url}
               </a>
+              {link.color && (
+                <div className="mt-1 flex items-center gap-2">
+                  <span
+                    className="inline-block h-3 w-3 rounded border"
+                    style={{ backgroundColor: link.color }}
+                  />
+                  <span className="text-secondary/60 text-[10px]">{link.color}</span>
+                </div>
+              )}
             </div>
 
             <div className="flex shrink-0 gap-2">
@@ -220,4 +255,6 @@ export function LinksTab({ token }: LinksTabProps) {
       </div>
     </div>
   );
-}
+};
+
+export default LinksTab;

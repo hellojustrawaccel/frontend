@@ -1,6 +1,5 @@
 import { ExperienceType, LinkType } from '@/constants/enums.constant';
-import { Experience } from '@/types/experience';
-import { Link } from '@/types/links';
+import { Experience, Link } from '@/types';
 import { Project } from '@/types/project';
 
 export const mockLinks: Link[] = [

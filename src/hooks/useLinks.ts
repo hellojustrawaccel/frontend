@@ -14,7 +14,7 @@ export const useLinks = (type: LinkType) => {
     getLinks(type)
       .then((res) => setLinks(res))
       .finally(() => setLoading(false));
-  }, []);
+  }, [type]);
 
   return { links, loading };
 };

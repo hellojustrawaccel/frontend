@@ -1,54 +1,25 @@
 import { api } from '@/lib/api';
-import { LinkType } from '@/constants/enums.constant';
-import { ClientLink, ServerLink } from '@/types';
+import type { BackendLink, CreateLinkRequest, UpdateLinkRequest } from '@/types';
 
-export const getLinks = async (type: LinkType): Promise<ClientLink<typeof type>[]> => {
-  const data = await api.get<ServerLink[]>(`/v1/links?type=${type}`);
-
-  return data.map(({ title, description, url, color, order }) =>
-    type === LinkType.Home
-      ? {
-          title,
-          url,
-          order,
-        }
-      : {
-          title,
-          url,
-          order,
-          description,
-          color,
-        }
-  );
+export const getLinks = async (type?: string): Promise<BackendLink[]> => {
+  const endpoint = type ? `/v1/links?type=${type}` : '/v1/links';
+  return api.get<BackendLink[]>(endpoint);
 };
 
-export const getLinkById = async (id: string) => {
-  return api.get<ServerLink>(`/v1/links/${id}`);
-};
+export const getLinkById = async (id: string): Promise<BackendLink> =>
+  api.get<BackendLink>(`/v1/links/${id}`);
 
 export const createLink = async (
-  link: Omit<ServerLink, 'id' | 'createdAt' | 'updatedAt'>,
+  data: CreateLinkRequest,
   token: string
-) => {
-  return api.post<ServerLink, Omit<ServerLink, 'id' | 'createdAt' | 'updatedAt'>>(
-    '/v1/links',
-    link,
-    token
-  );
-};
+): Promise<BackendLink> => api.post<BackendLink, CreateLinkRequest>('/v1/links', data, token);
 
 export const updateLink = async (
   id: string,
-  link: Partial<Omit<ServerLink, 'id' | 'createdAt' | 'updatedAt'>>,
+  data: UpdateLinkRequest,
   token: string
-) => {
-  return api.patch<ServerLink, Partial<Omit<ServerLink, 'id' | 'createdAt' | 'updatedAt'>>>(
-    `/v1/links/${id}`,
-    link,
-    token
-  );
-};
+): Promise<BackendLink> =>
+  api.patch<BackendLink, UpdateLinkRequest>(`/v1/links/${id}`, data, token);
 
-export const deleteLink = async (id: string, token: string) => {
-  return api.delete<void>(`/v1/links/${id}`, token);
-};
+export const deleteLink = async (id: string, token: string): Promise<void> =>
+  api.delete<void>(`/v1/links/${id}`, token);

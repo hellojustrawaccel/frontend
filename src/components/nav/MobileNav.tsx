@@ -6,9 +6,9 @@ import { useState } from 'react';
 
 import { PAGES } from '@/constants/pages.constant';
 import { useAuth } from '@/hooks/useAuth';
-import { cn } from '@/utils/cn';
-import { UserMenu } from './UserMenu';
-import { AuthButtons } from './AuthButtons';
+import { cn } from '@/lib/cn';
+import UserMenu from './UserMenu';
+import AuthButtons from './AuthButtons';
 
 const MobileNav = () => {
   const router = useRouter();
@@ -23,7 +23,6 @@ const MobileNav = () => {
 
   return (
     <>
-      {/* Auth Button/Avatar - Fixed top right on mobile */}
       <div className="fixed top-4 right-4 z-100 sm:hidden">
         {!isReady ? (
           <div className="bg-primary/10 flex h-9 items-center justify-center rounded-full px-4">
@@ -45,7 +44,6 @@ const MobileNav = () => {
         )}
       </div>
 
-      {/* Auth Menu Popup */}
       {showAuthMenu && !isAuthenticated && (
         <>
           <div
@@ -58,7 +56,6 @@ const MobileNav = () => {
         </>
       )}
 
-      {/* Bottom Navigation */}
       <motion.div
         layout
         className="font-karla text-tertiary border-tertiary/15 fixed bottom-4 left-1/2 z-100 w-min -translate-x-1/2 rounded-full border bg-[#0707078e] p-1.5 text-sm shadow-xl shadow-black/5 sm:hidden"

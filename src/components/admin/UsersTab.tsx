@@ -1,16 +1,16 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { getUsers, activateUser, deactivateUser } from '@/services/auth';
-import type { User } from '@/types/auth';
-import LoadingSpinner from '@/components/LoadingSpinner';
-import ErrorBlock from '@/components/ErrorBlock';
+import { useState, useEffect, useCallback } from 'react';
+import { getUsers, activateUser, deactivateUser } from '@/lib/queries/auth';
+import type { User } from '@/types';
+import Skeleton from '@/components/common/Skeleton';
+import ErrorBlock from '@/components/common/ErrorBlock';
 
 type UsersTabProps = {
   token?: string;
 };
 
-export function UsersTab({ token }: UsersTabProps) {
+const UsersTab = ({ token }: UsersTabProps) => {
   const [users, setUsers] = useState<User[]>([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
@@ -22,7 +22,7 @@ export function UsersTab({ token }: UsersTabProps) {
     active?: boolean;
   }>({});
 
-  const loadUsers = async () => {
+  const loadUsers = useCallback(async () => {
     if (!token) return;
 
     setLoading(true);
@@ -37,11 +37,11 @@ export function UsersTab({ token }: UsersTabProps) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [page, limit, filter.provider, filter.active, token]);
 
   useEffect(() => {
     loadUsers();
-  }, [page, filter, token]);
+  }, [page, filter, token, loadUsers]);
 
   const handleActivate = async (userId: string) => {
     if (!token) return;
@@ -69,8 +69,11 @@ export function UsersTab({ token }: UsersTabProps) {
 
   if (loading && users.length === 0) {
     return (
-      <div className="flex justify-center py-12">
-        <LoadingSpinner />
+      <div className="flex flex-col gap-3 py-12">
+        <Skeleton className="h-14 w-full" />
+        <Skeleton className="h-14 w-full" />
+        <Skeleton className="h-14 w-full" />
+        <Skeleton className="h-14 w-full" />
       </div>
     );
   }
@@ -79,7 +82,6 @@ export function UsersTab({ token }: UsersTabProps) {
     <div className="space-y-4">
       {error && <ErrorBlock label="Ошибка" message={error} />}
 
-      {/* Filters */}
       <div className="flex flex-col gap-2 sm:flex-row sm:gap-4">
         <select
           value={filter.provider || ''}
@@ -119,7 +121,6 @@ export function UsersTab({ token }: UsersTabProps) {
         </div>
       </div>
 
-      {/* Users List */}
       <div className="space-y-2">
         {users.map((user) => (
           <div
@@ -186,7 +187,6 @@ export function UsersTab({ token }: UsersTabProps) {
         ))}
       </div>
 
-      {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex justify-center gap-2 pt-4">
           <button
@@ -212,4 +212,6 @@ export function UsersTab({ token }: UsersTabProps) {
       )}
     </div>
   );
-}
+};
+
+export default UsersTab;

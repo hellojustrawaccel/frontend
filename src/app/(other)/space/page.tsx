@@ -2,8 +2,8 @@
 
 import { motion } from 'motion/react';
 
-import PageContent from '@/components/PageContent';
-import PageWrapper from '@/components/PageWrapper';
+import PageContent from '@/components/layout/PageContent';
+import PageWrapper from '@/components/layout/PageWrapper';
 
 const SpacePage = () => {
   return (
@@ -17,9 +17,9 @@ const SpacePage = () => {
             transition={{ duration: 0.3, ease: [0.26, 1, 0.6, 1] }}
           >
             <p className="mb-2">
-              umm, the idea is that this will be a kind of "space" for my projects, or more
-              precisely, the visual part of them. it is currently being refined, and it will
-              take some time to determine how it will look.
+              umm, the idea is that this will be a kind of &quot;space&quot; for my projects,
+              or more precisely, the visual part of them. it is currently being refined, and it
+              will take some time to determine how it will look.
             </p>
           </motion.div>
         </div>

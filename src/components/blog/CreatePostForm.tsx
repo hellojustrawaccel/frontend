@@ -4,9 +4,8 @@ import { motion } from 'motion/react';
 import { useState } from 'react';
 import { X } from 'lucide-react';
 
-import FormInput from '@/components/FormInput';
-import LoadingSpinner from '@/components/LoadingSpinner';
-import { cn } from '@/utils/cn';
+import FormInput from '@/components/common/FormInput';
+import { cn } from '@/lib/cn';
 
 interface CreatePostFormProps {
   onSubmit: (data: {
@@ -48,7 +47,6 @@ const CreatePostForm = ({ onSubmit, onCancel, isSubmitting = false }: CreatePost
         published,
       });
 
-      // Reset form
       setTitle('');
       setContent('');
       setExcerpt('');
@@ -165,14 +163,7 @@ const CreatePostForm = ({ onSubmit, onCancel, isSubmitting = false }: CreatePost
               'disabled:cursor-not-allowed disabled:opacity-50'
             )}
           >
-            {isSubmitting ? (
-              <>
-                <LoadingSpinner size="sm" />
-                Creating...
-              </>
-            ) : (
-              'Create Post'
-            )}
+            {isSubmitting ? <>Creating...</> : 'Create Post'}
           </button>
 
           <button

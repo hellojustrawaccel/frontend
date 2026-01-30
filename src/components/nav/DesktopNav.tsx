@@ -5,15 +5,15 @@ import { usePathname } from 'next/navigation';
 
 import { PAGES } from '@/constants/pages.constant';
 import { useAuth } from '@/hooks/useAuth';
-import { cn } from '@/utils/cn';
-import { UserMenu } from './UserMenu';
-import { AuthButtons } from './AuthButtons';
+import { cn } from '@/lib/cn';
+import UserMenu from './UserMenu';
+import AuthButtons from './AuthButtons';
 
 const DesktopNav = () => {
   const pathname = usePathname();
   const { isAuthenticated, user, isReady } = useAuth();
 
-  return !pathname.startsWith('/blog/') ? (
+  return !pathname.startsWith('/channel/') ? (
     <div
       key="nav"
       className="font-karla text-tertiary fixed top-10 left-10 z-100 hidden flex-row items-center gap-6 pb-3 text-sm sm:flex"

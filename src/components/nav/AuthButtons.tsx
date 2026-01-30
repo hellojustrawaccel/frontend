@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { cn } from '@/utils/cn';
+import { cn } from '@/lib/cn';
 
 type AuthButtonsProps = {
   variant?: 'horizontal' | 'vertical';
@@ -7,11 +7,7 @@ type AuthButtonsProps = {
   isLoading?: boolean;
 };
 
-export const AuthButtons = ({
-  variant = 'horizontal',
-  className,
-  isLoading,
-}: AuthButtonsProps) => {
+const AuthButtons = ({ variant = 'horizontal', className, isLoading }: AuthButtonsProps) => {
   if (isLoading) {
     if (variant === 'vertical') {
       return (
@@ -73,3 +69,5 @@ export const AuthButtons = ({
     </div>
   );
 };
+
+export default AuthButtons;

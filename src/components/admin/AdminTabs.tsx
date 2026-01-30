@@ -2,14 +2,14 @@
 
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { UsersTab } from './UsersTab';
-import { PostsTab } from './PostsTab';
-import { LinksTab } from './LinksTab';
-import { ExperienceTab } from './ExperienceTab';
+import UsersTab from './UsersTab';
+import PostsTab from './PostsTab';
+import LinksTab from './LinksTab';
+import ExperienceTab from './ExperienceTab';
 
 type Tab = 'users' | 'posts' | 'links' | 'experience';
 
-export function AdminTabs() {
+const AdminTabs = () => {
   const { data: session } = useSession();
   const [activeTab, setActiveTab] = useState<Tab>('users');
 
@@ -22,7 +22,6 @@ export function AdminTabs() {
 
   return (
     <div className="mx-auto w-full max-w-6xl px-4 sm:px-0">
-      {/* Tabs */}
       <div className="border-secondary/20 mb-6 flex gap-1 overflow-x-auto border-b">
         {tabs.map((tab) => (
           <button
@@ -40,7 +39,6 @@ export function AdminTabs() {
         ))}
       </div>
 
-      {/* Tab Content */}
       <div key={activeTab}>
         {activeTab === 'users' && <UsersTab token={session?.backendToken} />}
         {activeTab === 'posts' && <PostsTab token={session?.backendToken} />}
@@ -49,4 +47,6 @@ export function AdminTabs() {
       </div>
     </div>
   );
-}
+};
+
+export default AdminTabs;

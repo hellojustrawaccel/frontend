@@ -6,7 +6,7 @@ interface FunFactsClientProps {
   facts: { key: number; content: React.ReactNode }[];
 }
 
-export function FunFactsClient({ facts }: FunFactsClientProps) {
+const FunFactsClient = ({ facts }: FunFactsClientProps) => {
   return (
     <div className="flex flex-col gap-2">
       <h3 className="leading-none font-bold">fun facts</h3>
@@ -26,4 +26,6 @@ export function FunFactsClient({ facts }: FunFactsClientProps) {
       </div>
     </div>
   );
-}
+};
+
+export default FunFactsClient;

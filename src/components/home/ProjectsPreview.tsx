@@ -4,7 +4,8 @@ import { motion } from 'motion/react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { getImageURLFromKey } from '@/utils/cdn/image';
+import { getImageURLFromKey } from '@/lib/cdn';
+import { Project } from '@/types/project';
 
 interface Props {
   projects: Project[];
@@ -12,7 +13,7 @@ interface Props {
   onViewAll: () => void;
 }
 
-export const HomeProjectsPreview = ({ projects, limit = 3, onViewAll }: Props) => {
+const HomeProjectsPreview = ({ projects, limit = 3, onViewAll }: Props) => {
   const visible = projects.slice(0, limit);
 
   return (
@@ -95,3 +96,5 @@ export const HomeProjectsPreview = ({ projects, limit = 3, onViewAll }: Props) =
     </div>
   );
 };
+
+export default HomeProjectsPreview;

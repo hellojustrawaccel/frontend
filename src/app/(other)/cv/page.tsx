@@ -2,8 +2,8 @@
 
 import { motion } from 'motion/react';
 
-import PageContent from '@/components/PageContent';
-import PageWrapper from '@/components/PageWrapper';
+import PageContent from '@/components/layout/PageContent';
+import PageWrapper from '@/components/layout/PageWrapper';
 import Link from 'next/link';
 
 const CVPage = () => {

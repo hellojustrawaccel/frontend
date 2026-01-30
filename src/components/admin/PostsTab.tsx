@@ -1,16 +1,16 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { getPosts, createPost, updatePost, deletePost } from '@/services/posts';
+import { useState, useEffect, useCallback } from 'react';
+import { getPosts, createPost, updatePost, deletePost } from '@/lib/queries/posts';
 import type { Post, CreatePostRequest } from '@/types/post';
-import LoadingSpinner from '@/components/LoadingSpinner';
-import ErrorBlock from '@/components/ErrorBlock';
+import Skeleton from '@/components/common/Skeleton';
+import ErrorBlock from '@/components/common/ErrorBlock';
 
 type PostsTabProps = {
   token?: string;
 };
 
-export function PostsTab({ token }: PostsTabProps) {
+const PostsTab = ({ token }: PostsTabProps) => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
@@ -26,7 +26,7 @@ export function PostsTab({ token }: PostsTabProps) {
     published: false,
   });
 
-  const loadPosts = async () => {
+  const loadPosts = useCallback(async () => {
     setLoading(true);
     setError(null);
 
@@ -39,11 +39,11 @@ export function PostsTab({ token }: PostsTabProps) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [page, limit, showDrafts, token]);
 
   useEffect(() => {
     loadPosts();
-  }, [page, showDrafts, token]);
+  }, [page, showDrafts, token, loadPosts]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -96,8 +96,11 @@ export function PostsTab({ token }: PostsTabProps) {
 
   if (loading && posts.length === 0) {
     return (
-      <div className="flex justify-center py-12">
-        <LoadingSpinner />
+      <div className="flex flex-col gap-3 py-12">
+        <Skeleton className="h-16 w-full" />
+        <Skeleton className="h-16 w-full" />
+        <Skeleton className="h-16 w-full" />
+        <Skeleton className="h-16 w-full" />
       </div>
     );
   }
@@ -106,7 +109,6 @@ export function PostsTab({ token }: PostsTabProps) {
     <div className="space-y-4">
       {error && <ErrorBlock label="Ошибка" message={error} />}
 
-      {/* Create Button */}
       {!isCreating && (
         <div className="flex items-center justify-between">
           <button
@@ -131,7 +133,6 @@ export function PostsTab({ token }: PostsTabProps) {
         </div>
       )}
 
-      {/* Create/Edit Form */}
       {isCreating && (
         <form
           onSubmit={handleSubmit}
@@ -189,7 +190,6 @@ export function PostsTab({ token }: PostsTabProps) {
         </form>
       )}
 
-      {/* Posts List */}
       <div className="space-y-2">
         {posts.map((post) => (
           <div
@@ -235,7 +235,6 @@ export function PostsTab({ token }: PostsTabProps) {
         ))}
       </div>
 
-      {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex justify-center gap-2 pt-4">
           <button
@@ -261,4 +260,6 @@ export function PostsTab({ token }: PostsTabProps) {
       )}
     </div>
   );
-}
+};
+
+export default PostsTab;

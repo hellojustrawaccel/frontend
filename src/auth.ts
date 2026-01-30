@@ -5,43 +5,47 @@ import GitLab from 'next-auth/providers/gitlab';
 import Google from 'next-auth/providers/google';
 import Credentials from 'next-auth/providers/credentials';
 import type { NextAuthConfig } from 'next-auth';
-import { oauthLogin, verifyLogin } from '@/services/auth';
+import { oauthLogin, verifyLogin } from '@/lib/queries/auth';
+import type { User as AppUser, UserRole } from '@/types';
 
 declare module 'next-auth' {
   interface Session {
     user: {
       id: string;
-      username?: string | null;
-      email?: string | null;
+      username: string;
+      email: string;
       image?: string | null;
-      provider?: string;
+      provider?: 'passwordless' | 'google' | 'github' | 'discord' | 'gitlab';
+      providerId?: string | null;
       emailVerified?: boolean;
-      active?: boolean;
-      role?: string;
+      active: boolean;
+      role: UserRole;
+      isAdmin?: boolean;
     };
     backendToken?: string;
   }
 
   interface User {
     id: string;
-    username?: string;
-    email?: string | null;
+    username: string;
+    email: string;
     image?: string | null;
-    provider?: string;
+    provider?: 'passwordless' | 'google' | 'github' | 'discord' | 'gitlab';
+    providerId?: string | null;
     emailVerified?: boolean;
-    active?: boolean;
-    role?: string;
+    active: boolean;
+    isAdmin?: boolean;
     backendToken?: string;
   }
 }
 
 interface ExtendedJWT {
-  provider?: string;
+  provider?: 'passwordless' | 'google' | 'github' | 'discord' | 'gitlab';
   username?: string;
   emailVerified?: boolean;
   sub?: string;
   active?: boolean;
-  role?: string;
+  isAdmin?: boolean;
   backendToken?: string;
 }
 
@@ -89,7 +93,6 @@ export const authConfig = {
               provider: 'passwordless',
               emailVerified: response.user.emailVerified,
               active: response.user.active,
-              role: response.user.role,
               backendToken: response.access_token,
             };
           }
@@ -125,7 +128,7 @@ export const authConfig = {
             user.provider = response.user.provider;
             user.emailVerified = response.user.emailVerified;
             user.active = response.user.active;
-            user.role = response.user.role;
+            user.isAdmin = response.user.isAdmin;
             user.backendToken = response.access_token;
 
             return true;
@@ -146,7 +149,7 @@ export const authConfig = {
         token.provider = user.provider;
         token.emailVerified = user.emailVerified;
         token.active = user.active;
-        token.role = user.role;
+        token.isAdmin = user.isAdmin;
         token.backendToken = user.backendToken;
       }
 
@@ -157,11 +160,11 @@ export const authConfig = {
 
       if (session.user) {
         session.user.id = extendedToken.sub ?? '';
-        session.user.username = extendedToken.username;
+        session.user.username = extendedToken.username ?? '';
+        session.user.email = session.user.email ?? '';
         session.user.provider = extendedToken.provider;
-        session.user.emailVerified = extendedToken.emailVerified as any;
-        session.user.active = extendedToken.active;
-        session.user.role = extendedToken.role;
+        session.user.active = extendedToken.active ?? false;
+        session.user.isAdmin = extendedToken.isAdmin;
       }
 
       session.backendToken = extendedToken.backendToken;

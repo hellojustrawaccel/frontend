@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { Trash2, Edit2 } from 'lucide-react';
 
 import type { Comment } from '@/types/post';
-import { cn } from '@/utils/cn';
+import { cn } from '@/lib/cn';
 
 interface CommentCardProps {
   comment: Comment;
@@ -55,14 +55,12 @@ const CommentCard = ({
       transition={{ duration: 0.2, ease: [0.26, 1, 0.6, 1] }}
       className="border-tertiary/10 group hover:border-tertiary/20 flex gap-3 rounded-lg border bg-transparent p-3 transition-colors"
     >
-      {/* Avatar */}
       <div className="bg-tertiary/10 flex size-8 shrink-0 items-center justify-center rounded-full">
         <span className="text-primary text-xs font-medium">
           {comment.author?.username?.[0]?.toUpperCase() || 'U'}
         </span>
       </div>
 
-      {/* Content */}
       <div className="flex min-w-0 flex-1 flex-col gap-1">
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">

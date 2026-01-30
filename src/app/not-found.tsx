@@ -1,10 +1,10 @@
-import PageContent from '@/components/PageContent';
-import PageWrapper from '@/components/PageWrapper';
+import PageContent from '@/components/layout/PageContent';
+import PageWrapper from '@/components/layout/PageWrapper';
 
 const NotFoundPage = () => (
   <PageWrapper>
     <PageContent>
-      <p className="text-sm">404 - have a moment to yourself.</p>
+      <p className="mb-2">404 - have a moment to yourself.</p>
     </PageContent>
   </PageWrapper>
 );

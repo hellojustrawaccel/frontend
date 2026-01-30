@@ -1,17 +1,23 @@
 'use client';
 
 import { motion } from 'motion/react';
-import LinkPreview from '@/components/LinkPreview';
+import LinkPreview from '@/components/common/LinkPreview';
 import ExperienceDuration from '@/components/home/ExperienceDuration';
-import ExperienceType from '@/components/home/ExperienceType';
-import { getImageURLFromKey } from '@/utils/cdn/image';
+import { getImageURLFromKey } from '@/lib/cdn';
 import { ClientExperience } from '@/types';
+import { ExperienceType } from '@/constants/enums.constant';
+
+const TypeTitles: Record<string | ExperienceType, string> = {
+  [ExperienceType.Contract]: 'contract',
+  [ExperienceType.FullTime]: 'full-time',
+  [ExperienceType.PartTime]: 'part-time',
+};
 
 interface ExperienceClientProps {
   experiences: ClientExperience[];
 }
 
-export function ExperienceClient({ experiences }: ExperienceClientProps) {
+const ExperienceClient = ({ experiences }: ExperienceClientProps) => {
   return (
     <div className="flex flex-col gap-2">
       <h3 className="leading-none font-bold">experience</h3>
@@ -41,7 +47,10 @@ export function ExperienceClient({ experiences }: ExperienceClientProps) {
               </div>
 
               <p className="text-tertiary">
-                {data.role} <ExperienceType type={data.type} />
+                {data.role}{' '}
+                <span className="inline-flex items-center rounded-md border border-white/10 bg-white/5 px-2 py-0.5 text-[11px] leading-none font-medium">
+                  {TypeTitles[data.type]}
+                </span>
               </p>
             </LinkPreview>
           </motion.div>
@@ -49,4 +58,6 @@ export function ExperienceClient({ experiences }: ExperienceClientProps) {
       </div>
     </div>
   );
-}
+};
+
+export default ExperienceClient;

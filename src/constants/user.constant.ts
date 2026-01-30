@@ -1,5 +1,5 @@
 /**
- * @safety_warn
+ * @safety
  * Read before using for your own purposes
  *
  * This info is not confidential but is not for distribution

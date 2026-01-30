@@ -4,9 +4,9 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useEffect, useState } from 'react';
 
 import PostCard from './PostCard';
-import LoadingSpinner from '@/components/LoadingSpinner';
+import { PostSkeleton } from '@/components/common/skeletons';
 import type { Post } from '@/types/post';
-import { cn } from '@/utils/cn';
+import { cn } from '@/lib/cn';
 
 interface PostsListProps {
   posts: Post[];
@@ -68,8 +68,10 @@ const PostsList = ({
 
   if (isLoading && posts.length === 0) {
     return (
-      <div className="flex w-full items-center justify-center py-12">
-        <LoadingSpinner />
+      <div className="flex w-full flex-col gap-4">
+        <PostSkeleton />
+        <PostSkeleton />
+        <PostSkeleton />
       </div>
     );
   }
@@ -101,8 +103,9 @@ const PostsList = ({
       </AnimatePresence>
 
       {isLoading && posts.length > 0 && (
-        <div className="flex w-full items-center justify-center py-4">
-          <LoadingSpinner />
+        <div className="flex w-full flex-col gap-4">
+          <PostSkeleton />
+          <PostSkeleton />
         </div>
       )}
 

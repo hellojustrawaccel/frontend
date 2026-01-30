@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { cn } from '@/utils/cn';
+import { cn } from '@/lib/cn';
 
 type AvatarProps = {
   src?: string | null;
@@ -14,7 +14,7 @@ const sizeMap = {
   lg: 'size-10 text-sm',
 };
 
-export const Avatar = ({ src, name, size = 'sm', className }: AvatarProps) => {
+const Avatar = ({ src, name, size = 'sm', className }: AvatarProps) => {
   const fallback = name?.slice(0, 1).toUpperCase() ?? '?';
 
   return (
@@ -33,3 +33,5 @@ export const Avatar = ({ src, name, size = 'sm', className }: AvatarProps) => {
     </div>
   );
 };
+
+export default Avatar;

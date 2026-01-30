@@ -6,28 +6,29 @@ import {
   createExperience,
   updateExperience,
   deleteExperience,
-} from '@/services/experience';
-import type { BackendExperience, CreateExperienceRequest } from '@/types/experience';
-import LoadingSpinner from '@/components/LoadingSpinner';
-import ErrorBlock from '@/components/ErrorBlock';
+} from '@/lib/queries/experience';
+import type { BackendExperience, CreateExperienceRequest } from '@/types';
+import Skeleton from '@/components/common/Skeleton';
+import ErrorBlock from '@/components/common/ErrorBlock';
 
 type ExperienceTabProps = {
   token?: string;
 };
 
-export function ExperienceTab({ token }: ExperienceTabProps) {
+const ExperienceTab = ({ token }: ExperienceTabProps) => {
   const [experiences, setExperiences] = useState<BackendExperience[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [editingExperience, setEditingExperience] = useState<BackendExperience | null>(null);
   const [isCreating, setIsCreating] = useState(false);
   const [formData, setFormData] = useState<CreateExperienceRequest>({
-    title: '',
     company: '',
-    description: '',
+    role: '',
+    type: '',
+    url: '',
+    color: '',
     startDate: '',
     endDate: null,
-    current: false,
     order: 0,
   });
 
@@ -54,24 +55,20 @@ export function ExperienceTab({ token }: ExperienceTabProps) {
     if (!token) return;
 
     try {
-      const submitData = {
-        ...formData,
-        endDate: formData.current ? null : formData.endDate,
-      };
-
       if (editingExperience) {
-        await updateExperience(editingExperience.id, submitData, token);
+        await updateExperience(editingExperience.id, formData, token);
       } else {
-        await createExperience(submitData, token);
+        await createExperience(formData, token);
       }
 
       setFormData({
-        title: '',
         company: '',
-        description: '',
+        role: '',
+        type: '',
+        url: '',
+        color: '',
         startDate: '',
         endDate: null,
-        current: false,
         order: 0,
       });
       setEditingExperience(null);
@@ -85,12 +82,13 @@ export function ExperienceTab({ token }: ExperienceTabProps) {
   const handleEdit = (experience: BackendExperience) => {
     setEditingExperience(experience);
     setFormData({
-      title: experience.title,
       company: experience.company,
-      description: experience.description || '',
-      startDate: experience.startDate.split('T')[0],
-      endDate: experience.endDate ? experience.endDate.split('T')[0] : null,
-      current: experience.current,
+      role: experience.role,
+      type: experience.type,
+      url: experience.url,
+      color: experience.color,
+      startDate: experience.startDate,
+      endDate: experience.endDate,
       order: experience.order,
     });
     setIsCreating(true);
@@ -109,12 +107,13 @@ export function ExperienceTab({ token }: ExperienceTabProps) {
 
   const handleCancel = () => {
     setFormData({
-      title: '',
       company: '',
-      description: '',
+      role: '',
+      type: '',
+      url: '',
+      color: '',
       startDate: '',
       endDate: null,
-      current: false,
       order: 0,
     });
     setEditingExperience(null);
@@ -123,8 +122,10 @@ export function ExperienceTab({ token }: ExperienceTabProps) {
 
   if (loading && experiences.length === 0) {
     return (
-      <div className="flex justify-center py-12">
-        <LoadingSpinner />
+      <div className="flex flex-col gap-4 py-12">
+        <Skeleton className="h-20 w-full" />
+        <Skeleton className="h-20 w-full" />
+        <Skeleton className="h-20 w-full" />
       </div>
     );
   }
@@ -133,7 +134,6 @@ export function ExperienceTab({ token }: ExperienceTabProps) {
     <div className="space-y-4">
       {error && <ErrorBlock label="Ошибка" message={error} />}
 
-      {/* Create Button */}
       {!isCreating && (
         <button
           onClick={() => setIsCreating(true)}
@@ -143,7 +143,6 @@ export function ExperienceTab({ token }: ExperienceTabProps) {
         </button>
       )}
 
-      {/* Create/Edit Form */}
       {isCreating && (
         <form
           onSubmit={handleSubmit}
@@ -155,16 +154,6 @@ export function ExperienceTab({ token }: ExperienceTabProps) {
 
           <input
             type="text"
-            placeholder="Должность"
-            value={formData.title}
-            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-            required
-            maxLength={200}
-            className="border-secondary/20 focus:border-secondary/40 w-full rounded border bg-white px-3 py-2 text-xs focus:outline-none"
-          />
-
-          <input
-            type="text"
             placeholder="Компания"
             value={formData.company}
             onChange={(e) => setFormData({ ...formData, company: e.target.value })}
@@ -173,12 +162,41 @@ export function ExperienceTab({ token }: ExperienceTabProps) {
             className="border-secondary/20 focus:border-secondary/40 w-full rounded border bg-white px-3 py-2 text-xs focus:outline-none"
           />
 
-          <textarea
-            placeholder="Описание (опционально)"
-            value={formData.description}
-            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-            rows={4}
-            className="border-secondary/20 focus:border-secondary/40 w-full resize-none rounded border bg-white px-3 py-2 text-xs focus:outline-none"
+          <input
+            type="text"
+            placeholder="Должность"
+            value={formData.role}
+            onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+            required
+            maxLength={200}
+            className="border-secondary/20 focus:border-secondary/40 w-full rounded border bg-white px-3 py-2 text-xs focus:outline-none"
+          />
+
+          <input
+            type="text"
+            placeholder="Тип (full-time, part-time, contract)"
+            value={formData.type}
+            onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+            required
+            className="border-secondary/20 focus:border-secondary/40 w-full rounded border bg-white px-3 py-2 text-xs focus:outline-none"
+          />
+
+          <input
+            type="url"
+            placeholder="URL"
+            value={formData.url}
+            onChange={(e) => setFormData({ ...formData, url: e.target.value })}
+            required
+            className="border-secondary/20 focus:border-secondary/40 w-full rounded border bg-white px-3 py-2 text-xs focus:outline-none"
+          />
+
+          <input
+            type="text"
+            placeholder="Цвет (hex, например #FF5733)"
+            value={formData.color}
+            onChange={(e) => setFormData({ ...formData, color: e.target.value })}
+            required
+            className="border-secondary/20 focus:border-secondary/40 w-full rounded border bg-white px-3 py-2 text-xs focus:outline-none"
           />
 
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -194,26 +212,17 @@ export function ExperienceTab({ token }: ExperienceTabProps) {
             </div>
 
             <div>
-              <label className="text-secondary/60 mb-1 block text-xs">Дата окончания</label>
+              <label className="text-secondary/60 mb-1 block text-xs">
+                Дата окончания (опционально)
+              </label>
               <input
                 type="date"
                 value={formData.endDate || ''}
                 onChange={(e) => setFormData({ ...formData, endDate: e.target.value || null })}
-                disabled={formData.current}
-                className="border-secondary/20 focus:border-secondary/40 w-full rounded border bg-white px-3 py-2 text-xs focus:outline-none disabled:opacity-50"
+                className="border-secondary/20 focus:border-secondary/40 w-full rounded border bg-white px-3 py-2 text-xs focus:outline-none"
               />
             </div>
           </div>
-
-          <label className="text-secondary/60 flex cursor-pointer items-center gap-2 text-xs">
-            <input
-              type="checkbox"
-              checked={formData.current}
-              onChange={(e) => setFormData({ ...formData, current: e.target.checked })}
-              className="rounded"
-            />
-            Текущая работа
-          </label>
 
           <input
             type="number"
@@ -243,7 +252,6 @@ export function ExperienceTab({ token }: ExperienceTabProps) {
         </form>
       )}
 
-      {/* Experiences List */}
       <div className="space-y-2">
         {experiences.map((exp) => (
           <div
@@ -253,19 +261,34 @@ export function ExperienceTab({ token }: ExperienceTabProps) {
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
-                  <h4 className="text-primary text-sm font-medium">{exp.title}</h4>
+                  <h4 className="text-primary text-sm font-medium">{exp.role}</h4>
                   <span className="bg-secondary/10 text-secondary/60 border-secondary/20 rounded border px-2 py-0.5 text-[10px]">
                     #{exp.order}
                   </span>
+                  <span
+                    className="rounded border px-2 py-0.5 text-[10px]"
+                    style={{
+                      backgroundColor: `${exp.color}20`,
+                      borderColor: `${exp.color}40`,
+                      color: exp.color,
+                    }}
+                  >
+                    {exp.type}
+                  </span>
                 </div>
                 <p className="text-secondary/60 text-xs">{exp.company}</p>
-                {exp.description && (
-                  <p className="text-secondary/60 mt-1 text-xs">{exp.description}</p>
-                )}
+                <a
+                  href={exp.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-blue-600 hover:underline"
+                >
+                  {exp.url}
+                </a>
               </div>
 
               <div className="flex shrink-0 gap-2">
-                {exp.current && (
+                {!exp.endDate && (
                   <span className="rounded border border-green-500/20 bg-green-500/10 px-2 py-0.5 text-[10px] text-green-600">
                     Текущая
                   </span>
@@ -276,11 +299,9 @@ export function ExperienceTab({ token }: ExperienceTabProps) {
             <div className="border-secondary/10 flex items-center justify-between border-t pt-2">
               <span className="text-secondary/40 text-[10px]">
                 {new Date(exp.startDate).toLocaleDateString('ru-RU')} -{' '}
-                {exp.current
-                  ? 'Настоящее время'
-                  : exp.endDate
-                    ? new Date(exp.endDate).toLocaleDateString('ru-RU')
-                    : '—'}
+                {exp.endDate
+                  ? new Date(exp.endDate).toLocaleDateString('ru-RU')
+                  : 'Настоящее время'}
               </span>
 
               <div className="flex gap-2">
@@ -303,4 +324,6 @@ export function ExperienceTab({ token }: ExperienceTabProps) {
       </div>
     </div>
   );
-}
+};
+
+export default ExperienceTab;
