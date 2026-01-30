@@ -115,16 +115,18 @@ const LinkPreview = ({ href, preview, children }: Props) => {
 
           <div className="flex items-center justify-between gap-2 px-3 py-2">
             <p className="text-tertiary truncate text-xs font-medium">{hostname}</p>
-            <svg
-              viewBox="0 0 24 24"
-              className="text-tertiary size-4 opacity-70"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path d="M7 17L17 7" />
-              <path d="M9 7h8v8" />
-            </svg>
+            <a href={href} target="_blank" rel="noreferrer noopener">
+              <svg
+                viewBox="0 0 24 24"
+                className="text-tertiary size-4 opacity-70"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path d="M7 17L17 7" />
+                <path d="M9 7h8v8" />
+              </svg>
+            </a>
           </div>
         </motion.div>
       )}

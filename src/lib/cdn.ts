@@ -1,7 +1,6 @@
-import { CDN_URL } from '@/constants/env.constant';
-
 type FileType = 'png' | 'jpg' | 'jpeg' | 'webp' | 'gif' | 'svg' | 'avif';
 
-const getImageURLFromKey = (key: `${string}.${FileType}`) => CDN_URL + '/' + key;
+const cdnURL = process.env.NEXT_PUBLIC_CDN_URL;
+const getImageURLFromKey = (key: `${string}.${FileType}`) => cdnURL + '/' + key;
 
 export { getImageURLFromKey };

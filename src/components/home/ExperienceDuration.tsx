@@ -5,14 +5,16 @@ import { AnimatePresence, motion } from 'motion/react';
 import { useMemo, useState } from 'react';
 
 const formatShortDuration = (start: dayjs.Dayjs, end: dayjs.Dayjs) => {
-  const monthsTotal = Math.max(0, end.diff(start, 'month'));
-  const years = Math.floor(monthsTotal / 12);
-  const months = monthsTotal % 12;
+  const totalDays = Math.max(0, end.diff(start, 'day'));
+  const years = Math.floor(totalDays / 365);
+  const months = Math.floor((totalDays % 365) / 30);
+  const days = totalDays % 30;
 
   const parts: string[] = [];
   if (years > 0) parts.push(`${years}y`);
   if (months > 0) parts.push(`${months}mo`);
-  if (parts.length === 0) parts.push('0mo');
+  if (days > 0) parts.push(`${days}d`);
+  if (parts.length === 0) parts.push('notime');
 
   return parts.join(' ');
 };
@@ -32,7 +34,7 @@ const ExperienceDuration = ({ startedAt, endedAt }: Props) => {
     return {
       label: formatShortDuration(start, end),
       rangeText: `${start.format('YYYY/MM/DD')} — ${
-        endedAt ? end.format('YYYY/MM/DD') : 'Present'
+        endedAt ? end.format('YYYY/MM/DD') : 'present'
       }`,
     };
   }, [startedAt, endedAt]);

@@ -33,12 +33,12 @@ const ExperienceClient = ({ experiences }: ExperienceClientProps) => {
           >
             <LinkPreview
               href={data.url}
-              preview={getImageURLFromKey(`experiences/${data.id}.webp`)}
+              preview={getImageURLFromKey(`experiences/${data.company}.webp`)}
             >
               <div className="flex items-center gap-2">
                 <span
-                  className="font-medium transition-colors duration-150"
-                  style={{ color: data.color }}
+                  className="font-medium transition-colors duration-150 hover:text-(--hover-color) hover:opacity-80"
+                  style={{ '--hover-color': data.color } as React.CSSProperties}
                 >
                   {data.company}
                 </span>
