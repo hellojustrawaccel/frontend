@@ -62,7 +62,7 @@ const BlogPage = () => {
         posts.map(async (post) => {
           try {
             const status = await getLikeStatus(post.id, token);
-            if (status.isLiked) {
+            if (status.liked) {
               likedSet.add(post.id);
             }
           } catch {}
@@ -120,7 +120,7 @@ const BlogPage = () => {
 
       setLikedPosts((prev) => {
         const newSet = new Set(prev);
-        if (response.isLiked) {
+        if (response.liked) {
           newSet.add(postId);
         } else {
           newSet.delete(postId);

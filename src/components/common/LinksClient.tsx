@@ -4,29 +4,20 @@ import { motion } from 'motion/react';
 import { ClientLink } from '@/types';
 import { LinkType } from '@/constants/enums.constant';
 
-interface LinksClientProps<T extends LinkType> {
-  links: ClientLink<T>[];
+interface LinksClientProps {
+  links: ClientLink[];
   variant?: 'horizontal' | 'vertical';
   title?: string;
 }
 
-const LinksClient = <T extends LinkType>({
-  links,
-  variant = 'horizontal',
-  title,
-}: LinksClientProps<T>) => {
+const LinksClient = ({ links, variant = 'horizontal', title }: LinksClientProps) => {
   if (variant === 'vertical') {
     return (
       <div className="flex flex-col gap-2">
         {title && <h3 className="leading-none font-bold">{title}</h3>}
         <div className="ml-3 flex flex-col gap-1">
           {links.map((link, i) => {
-            const {
-              url,
-              title: linkTitle,
-              color,
-              description,
-            } = link as ClientLink<LinkType.More>;
+            const { url, title: linkTitle, color, description } = link;
             return (
               <motion.div
                 key={i}

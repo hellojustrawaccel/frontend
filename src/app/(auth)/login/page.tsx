@@ -50,8 +50,8 @@ function LoginPageContent() {
         isEmail ? { email: inputIdentifier } : { username: inputIdentifier }
       );
 
-      setEmail(response.email);
-      setDevCode(response.code);
+      setEmail(response.email || response.identifier);
+      setDevCode(response.code || '');
       setStep('verify');
     } catch (err: any) {
       const errorMessage = err.message || 'failed to send login code';

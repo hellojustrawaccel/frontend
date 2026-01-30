@@ -11,22 +11,21 @@ type Props = {
 };
 
 const SpotifyTooltip = ({ activity }: Props) => {
-  if (!activity?.listening_to_spotify) return null;
+  if (!activity || !activity.listening_to_spotify || !activity.spotify) {
+    return null;
+  }
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 10 }}
-      transition={{ duration: 0.3, ease: [0.26, 1, 0.6, 1] }}
-      className="absolute right-10 bottom-10 mt-auto w-auto flex-col items-end justify-end max-sm:hidden"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+      className="text-tertiary relative flex w-full flex-col gap-2 text-xs select-none"
     >
-      <div className="flex flex-row items-center gap-2">
-        <div className="relative size-1.5 overflow-visible">
-          <span className="absolute size-1.25 rounded-full bg-green-600" />
-          <span className="absolute size-1.25 animate-ping rounded-full bg-[color(display-p3_0.385_0.8_0.414/1)] [animation-duration:2s]" />
-        </div>
-        <div className="text-secondary mt-0.5 flex flex-row gap-1 text-end text-sm">
+      <div className="flex items-center gap-2">
+        <div className="bg-primary h-1.5 w-1.5 animate-pulse rounded-full" />
+        <div className="flex items-center gap-1">
           Listening to{' '}
           <span className="relative w-min whitespace-nowrap">
             <Tooltip

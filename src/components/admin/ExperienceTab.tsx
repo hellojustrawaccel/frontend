@@ -8,6 +8,7 @@ import {
   deleteExperience,
 } from '@/lib/queries/experience';
 import type { BackendExperience, CreateExperienceRequest } from '@/types';
+import { ExperienceType } from '@/constants/enums.constant';
 import Skeleton from '@/components/common/Skeleton';
 import ErrorBlock from '@/components/common/ErrorBlock';
 
@@ -84,7 +85,7 @@ const ExperienceTab = ({ token }: ExperienceTabProps) => {
     setFormData({
       company: experience.company,
       role: experience.role,
-      type: experience.type,
+      type: experience.type as ExperienceType | '',
       url: experience.url,
       color: experience.color,
       startDate: experience.startDate,
@@ -176,7 +177,9 @@ const ExperienceTab = ({ token }: ExperienceTabProps) => {
             type="text"
             placeholder="Тип (full-time, part-time, contract)"
             value={formData.type}
-            onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, type: e.target.value as ExperienceType | '' })
+            }
             required
             className="border-secondary/20 focus:border-secondary/40 w-full rounded border bg-white px-3 py-2 text-xs focus:outline-none"
           />

@@ -20,7 +20,7 @@ const ProfilePage = () => {
               {user?.provider && (
                 <p className="text-tertiary text-xs">provider: {user?.provider}</p>
               )}
-              <p className="text-tertiary text-xs">role: {user?.role}</p>
+              <p className="text-tertiary text-xs">role: {user?.isAdmin ? 'admin' : 'user'}</p>
             </div>
           </div>
         </PageContent>

@@ -19,12 +19,12 @@ const RequireAdmin = ({ children }: { children: React.ReactNode }) => {
       return;
     }
 
-    if (user?.role !== 'admin') {
+    if (!user?.isAdmin) {
       router.replace('/');
     }
-  }, [isAuthenticated, isReady, router, user?.role]);
+  }, [isAuthenticated, isReady, router, user?.isAdmin]);
 
-  if (!isReady || !isAuthenticated || user?.role !== 'admin') {
+  if (!isReady || !isAuthenticated || !user?.isAdmin) {
     return (
       <div className="text-tertiary flex w-full items-center justify-center py-16 text-sm">
         loading…

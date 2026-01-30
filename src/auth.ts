@@ -6,7 +6,7 @@ import Google from 'next-auth/providers/google';
 import Credentials from 'next-auth/providers/credentials';
 import type { NextAuthConfig } from 'next-auth';
 import { oauthLogin, verifyLogin } from '@/lib/queries/auth';
-import type { User as AppUser, UserRole } from '@/types';
+import type { User as AppUser } from '@/types';
 
 declare module 'next-auth' {
   interface Session {
@@ -19,7 +19,6 @@ declare module 'next-auth' {
       providerId?: string | null;
       emailVerified?: boolean;
       active: boolean;
-      role: UserRole;
       isAdmin?: boolean;
     };
     backendToken?: string;

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { getLinks, createLink, updateLink, deleteLink } from '@/lib/queries/links';
 import type { BackendLink, CreateLinkRequest } from '@/types';
+import { LinkType } from '@/constants/enums.constant';
 import Skeleton from '@/components/common/Skeleton';
 import ErrorBlock from '@/components/common/ErrorBlock';
 
@@ -67,7 +68,7 @@ const LinksTab = ({ token }: LinksTabProps) => {
     setEditingLink(link);
     setFormData({
       title: link.title,
-      type: link.type,
+      type: link.type as LinkType | '',
       url: link.url,
       description: link.description || '',
       color: link.color || '',
@@ -140,7 +141,9 @@ const LinksTab = ({ token }: LinksTabProps) => {
             type="text"
             placeholder="Тип (home, more)"
             value={formData.type}
-            onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, type: e.target.value as LinkType | '' })
+            }
             required
             className="border-secondary/20 focus:border-secondary/40 w-full rounded border bg-white px-3 py-2 text-xs focus:outline-none"
           />
@@ -157,7 +160,7 @@ const LinksTab = ({ token }: LinksTabProps) => {
           <input
             type="text"
             placeholder="Описание (опционально)"
-            value={formData.description}
+            value={formData.description || ''}
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             className="border-secondary/20 focus:border-secondary/40 w-full rounded border bg-white px-3 py-2 text-xs focus:outline-none"
           />
@@ -165,7 +168,7 @@ const LinksTab = ({ token }: LinksTabProps) => {
           <input
             type="text"
             placeholder="Цвет (опционально, hex)"
-            value={formData.color}
+            value={formData.color || ''}
             onChange={(e) => setFormData({ ...formData, color: e.target.value })}
             className="border-secondary/20 focus:border-secondary/40 w-full rounded border bg-white px-3 py-2 text-xs focus:outline-none"
           />

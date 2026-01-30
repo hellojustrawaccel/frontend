@@ -84,7 +84,7 @@ const PostDetailPage = () => {
 
     try {
       const status = await getLikeStatus(postId, token);
-      setIsLiked(status.isLiked);
+      setIsLiked(status.liked);
     } catch (err) {
       console.error('Failed to load like status:', err);
     }
@@ -112,7 +112,7 @@ const PostDetailPage = () => {
 
     try {
       const response = await toggleLike(postId, token);
-      setIsLiked(response.isLiked);
+      setIsLiked(response.liked);
 
       if (post) {
         setPost({ ...post, likesCount: response.likesCount });
